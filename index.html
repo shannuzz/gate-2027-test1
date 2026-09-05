@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GATE 2027 • Computer Networks Weekly Test</title>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--text:#111827;--muted:#6b7280;--border:#e5e7eb;--accent:#2563eb;--good:#15803d;--bad:#dc2626}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.wrap{max-width:900px;margin:auto;padding:24px 16px}.top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}
+h1{font-size:26px;margin:4px 0}.sub{color:var(--muted);font-size:14px}.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px;margin-top:16px}
+input[type=text]{width:100%;padding:13px 14px;border:1px solid #d1d5db;border-radius:10px;font-size:16px;margin-top:8px}
+button{min-height:44px;padding:10px 16px;border-radius:10px;border:1px solid var(--border);background:#fff;cursor:pointer;font-weight:600}
+button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}button:disabled{opacity:.45;cursor:not-allowed}
+.actions{display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;margin-top:18px}.options{display:grid;gap:10px;margin-top:18px}
+.opt{border:1px solid var(--border);padding:14px;border-radius:12px;cursor:pointer;display:flex;gap:10px;align-items:flex-start}
+.opt.selected{border-color:var(--accent);background:#eff6ff}.opt input{margin-top:3px}
+.progress{height:8px;background:#e5e7eb;border-radius:99px;overflow:hidden;margin-top:14px}.bar{height:100%;background:var(--accent);width:0}
+.dots{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}.dot{width:34px;padding:0;font-size:12px}.answered{background:#eff6ff;border-color:#93c5fd}
+.result{text-align:center}.score{font-size:52px;font-weight:800}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:18px}.stat{border:1px solid var(--border);border-radius:12px;padding:14px;text-align:left}.stat b{display:block;font-size:22px}
+.review{margin-top:18px;text-align:left}.review-item{border-top:1px solid var(--border);padding:14px 0}.correct{color:var(--good)}.wrong{color:var(--bad)}
+.hidden{display:none}.notice{padding:12px;border-radius:10px;background:#fffbeb;border:1px solid #fde68a;color:#92400e;font-size:14px;margin-top:12px}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}th,td{padding:10px;border-bottom:1px solid var(--border);text-align:left}
+@media(max-width:560px){.wrap{padding:16px 10px}h1{font-size:22px}.card{padding:16px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div><div class="sub">GATE 2027 • COMPUTER NETWORKS</div><h1>Weekly Test — Layering, Switching & Performance</h1></div>
+    <button id="adminBtn">Admin Results</button>
+  </div>
+
+  <section id="start" class="card">
+    <h2>Before you start</h2>
+    <p class="sub">20 questions • MCQ/MSQ • Submit to calculate your score. Your result can be sent to the shared result sheet when the backend is configured.</p>
+    <label><b>Your name</b><input id="name" type="text" maxlength="60" placeholder="Enter your name"></label>
+    <div id="startMsg"></div>
+    <button class="primary" id="startBtn" style="margin-top:14px">Start Test</button>
+  </section>
+
+  <section id="quiz" class="hidden">
+    <div class="card">
+      <div class="top"><b id="counter">Question 1 of 20</b><span id="answeredCount" class="sub">0 answered</span></div>
+      <div class="progress"><div id="bar" class="bar"></div></div>
+      <div id="questionBox"></div>
+      <div class="actions">
+        <button id="prev">← Previous</button>
+        <div style="display:flex;gap:10px"><button id="next" class="primary">Next →</button><button id="submit" class="primary hidden">Submit Test</button></div>
+      </div>
+      <div id="dots" class="dots"></div>
+    </div>
+  </section>
+
+  <section id="result" class="card hidden"></section>
+  <section id="admin" class="card hidden">
+    <h2>Admin Results</h2>
+    <p class="sub">Enter your admin code. Results are loaded from the configured Google Apps Script backend.</p>
+    <input id="adminCode" type="password" placeholder="Admin code">
+    <button class="primary" id="loadResults" style="margin-top:10px">Load Results</button>
+    <div id="adminMsg"></div><div id="resultsTable"></div>
+  </section>
+</div>
+
+<script>
+const BACKEND_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+const ADMIN_CODE = "CHANGE_THIS_ADMIN_CODE";
+
+const qs=[
+["Which is the primary advantage of layering in computer networks?",["It completely eliminates communication overhead","It allows each layer to provide services independently of implementation details of other layers","It ensures every layer uses the same protocol","It eliminates the need for addressing"],[1]],
+["Which are valid reasons for using a layered architecture?",["Modularity","Easier protocol design and maintenance","Independence between implementation details of different layers","Elimination of all delays introduced by protocols"],[0,1,2]],
+["A layer provides a service to the layer above it primarily through:",["Physical signals only","A well-defined interface","The same protocol used by all other layers","Direct access to the internal implementation of the lower layer"],[1]],
+["Which switching technique generally requires a dedicated communication path to be established before data transmission?",["Datagram packet switching","Circuit switching","Virtual-circuit switching","Store-and-forward packet switching"],[1]],
+["In circuit switching, once a circuit has been established, which is generally true?",["Every packet can take a different path","Resources are dedicated to the connection","Packets always contain complete destination information","There is no connection establishment phase"],[1]],
+["Which technique divides a message into packets and allows different packets to potentially follow different routes?",["Circuit switching","Datagram packet switching","Virtual-circuit switching","Frequency-division switching"],[1]],
+["Which statements about datagram packet switching are correct?",["No dedicated path needs to be established before transmission","Packets belonging to the same message may follow different routes","Packets generally carry destination information","Resources are permanently reserved for a connection"],[0,1,2]],
+["In a virtual-circuit network, before transmitting data, the network generally:",["Establishes a logical path between source and destination","Reserves the entire physical bandwidth permanently","Sends all packets independently without maintaining connection information","Converts the network into a circuit-switched network"],[0]],
+["Which best distinguishes virtual-circuit switching from circuit switching?",["Virtual circuits never involve connection establishment","Virtual circuits use packets and may share physical links with other connections","Circuit switching uses packets whereas virtual circuits use continuous signals","Virtual circuits require a physically dedicated path"],[1]],
+["A packet of size L bits is transmitted over a link having rate R bits/sec. Ignoring other delays, transmission time is:",["LR","L/R","R/L","L+R"],[1]],
+["A link has bandwidth 10 Mbps. A packet of 20,000 bits is transmitted. What is transmission delay in milliseconds?",["0.2","2","20","200"],[1]],
+["Which factors determine propagation delay?",["Packet size and transmission rate","Distance and propagation speed of the medium","Number of routers only","Queue length only"],[1]],
+["A 1000-byte packet is transmitted over a 10 Mbps link. Ignoring other delays, transmission delay is:",["0.08 ms","0.8 ms","8 ms","80 ms"],[1]],
+["A packet of L bits crosses a link at R bits/sec with propagation delay dp. Ignoring queuing and processing, total delay is:",["L/R","dp","L/R + dp","R/L + dp"],[2]],
+["A 1500-byte packet travels over a 1000 km link. Propagation speed is 2×10^8 m/s and rate is 10 Mbps. Total transmission + propagation delay is approximately:",["1.25 ms","5 ms","6.2 ms","12.5 ms"],[2]],
+["A packet experiences processing=2 ms, queuing=5 ms, transmission=3 ms, propagation=10 ms. Total nodal delay is:",["10 ms","15 ms","20 ms","25 ms"],[2]],
+["A link has capacity 100 Mbps. Sender generates 150 Mbps and receiver can process 200 Mbps. Ignoring other limitations, maximum throughput is:",["50 Mbps","100 Mbps","150 Mbps","200 Mbps"],[1]],
+["Which correctly describes throughput?",["Physical distance between sender and receiver","Rate at which data is successfully delivered to the destination","Time required to transmit one bit","Propagation speed of the medium"],[1]],
+["A 10 MB file is transferred at effective throughput 5 Mbps. Assume 1 MB=10^6 bytes and no overhead. Approximate transfer time is:",["2 s","8 s","16 s","20 s"],[2]],
+["A packet of 10,000 bits crosses three 10 Mbps links, each with 5 ms propagation delay, using store-and-forward. Ignoring processing and queuing, total end-to-end delay is:",["16 ms","18 ms","18 ms + additional transmission effects","15 ms"],[2]]
+];
+
+let cur=0,answers=Array(qs.length).fill(null),name="",startedAt=null,submittedAt=null;
+
+const $=id=>document.getElementById(id);
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
+function render(){
+ const q=qs[cur]; $("counter").textContent=`Question ${cur+1} of ${qs.length}`;
+ $("answeredCount").textContent=`${answers.filter(x=>x!==null).length} answered`;
+ $("bar").style.width=((cur+1)/qs.length*100)+"%";
+ let html=`<h2 style="margin-bottom:0">${cur+1}. ${esc(q[0])}</h2><div class="sub" style="margin-top:6px">${q[2].length>1?"MSQ — select all correct options":"MCQ"}</div><div class="options">`;
+ q[1].forEach((o,i)=>{
+   const selected=Array.isArray(answers[cur])?answers[cur].includes(i):answers[cur]===i;
+   html+=`<label class="opt ${selected?"selected":""}"><input type="${q[2].length>1?"checkbox":"radio"}" name="q${cur}" value="${i}" ${selected?"checked":""}><span><b>${String.fromCharCode(65+i)}.</b> ${esc(o)}</span></label>`;
+ });
+ html+="</div>"; $("questionBox").innerHTML=html;
+ $("questionBox").querySelectorAll("input").forEach(inp=>inp.addEventListener("change",()=>{
+   if(q[2].length>1){const a=[...$("questionBox").querySelectorAll("input:checked")].map(x=>+x.value);answers[cur]=a.length?a:null;}
+   else answers[cur]=+inp.value;
+   render();
+ }));
+ $("prev").disabled=cur===0;$("next").classList.toggle("hidden",cur===qs.length-1);$("submit").classList.toggle("hidden",cur!==qs.length-1);
+ $("dots").innerHTML="";
+ qs.forEach((_,i)=>{const b=document.createElement("button");b.className="dot "+(answers[i]!==null?"answered":"");b.textContent=i+1;b.onclick=()=>{cur=i;render()};$("dots").appendChild(b);});
+}
+function calc(){
+ let score=0;
+ qs.forEach((q,i)=>{const c=q[2],a=answers[i]||[];if(c.length===1){if(a===c[0])score++;}else if(Array.isArray(a)&&a.length===c.length&&a.every(x=>c.includes(x)))score++;});
+ return score;
+}
+function showResult(){
+ submittedAt=new Date();const score=calc(),pct=Math.round(score/qs.length*100),time=Math.max(0,Math.round((submittedAt-startedAt)/1000));
+ $("quiz").classList.add("hidden");$("result").classList.remove("hidden");
+ $("result").innerHTML=`<div class="result"><div class="sub">TEST SUBMITTED</div><div class="score">${score}/${qs.length}</div><div style="font-size:20px;font-weight:700">${pct}%</div>
+ <div class="grid"><div class="stat"><span class="sub">Name</span><b style="font-size:18px">${esc(name)}</b></div><div class="stat"><span class="sub">Time</span><b>${Math.floor(time/60)}m ${time%60}s</b></div><div class="stat"><span class="sub">Attempt</span><b id="attemptNo">Saving…</b></div></div>
+ <div id="saveMsg" class="notice">Saving result…</div><button id="reviewBtn" style="margin-top:12px">Review Answers</button><div id="review" class="review hidden"></div></div>`;
+ saveResult(score,time).then(n=>{$("attemptNo").textContent=n||"—";$("saveMsg").textContent=n?"Result saved successfully.":"Backend not configured — result kept on this device only.";}).catch(()=>{$("attemptNo").textContent="—";$("saveMsg").textContent="Could not save online. Check your backend URL.";});
+ $("reviewBtn").onclick=()=>{$("review").classList.toggle("hidden");if(!$("review").innerHTML){let h="";qs.forEach((q,i)=>{const c=q[2],a=answers[i]||[];const ok=c.length===1?a===c[0]:Array.isArray(a)&&a.length===c.length&&a.every(x=>c.includes(x));h+=`<div class="review-item ${ok?"correct":"wrong"}"><b>${i+1}. ${esc(q[0])}</b><div>${ok?"✓ Correct":"✗ Incorrect"} • Correct: ${c.map(x=>String.fromCharCode(65+x)).join(", ")}</div></div>`});$("review").innerHTML=h;}};
+}
+async function saveResult(score,time){
+ if(!BACKEND_URL||BACKEND_URL.includes("PASTE_YOUR"))return null;
+ const payload={action:"submit",name,score,total:qs.length,percentage:Math.round(score/qs.length*100),timeSeconds:time,submittedAt:new Date().toISOString()};
+ const r=await fetch(BACKEND_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
+ const j=await r.json();return j.attempt||null;
+}
+$("startBtn").onclick=()=>{name=$("name").value.trim();if(!name){$("startMsg").innerHTML='<div class="notice">Enter your name first.</div>';return}startedAt=new Date();$("start").classList.add("hidden");$("quiz").classList.remove("hidden");render();};
+$("prev").onclick=()=>{if(cur>0){cur--;render();}};$("next").onclick=()=>{if(cur<qs.length-1){cur++;render();}};
+$("submit").onclick=()=>{const n=answers.filter(x=>x===null).length;if(n&&!confirm(`${n} question(s) are unanswered. Submit anyway?`))return;showResult();};
+$("adminBtn").onclick=()=>{$("admin").classList.toggle("hidden");window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});};
+$("loadResults").onclick=async()=>{
+ const code=$("adminCode").value;if(code!==ADMIN_CODE){$("adminMsg").innerHTML='<div class="notice">Wrong admin code.</div>';return}
+ if(!BACKEND_URL||BACKEND_URL.includes("PASTE_YOUR")){$("adminMsg").innerHTML='<div class="notice">Configure BACKEND_URL first.</div>';return}
+ try{const r=await fetch(BACKEND_URL+"?action=results&code="+encodeURIComponent(code));const j=await r.json();if(!j.ok)throw Error();let h="<table><tr><th>Rank</th><th>Name</th><th>Attempt</th><th>Score</th><th>%</th><th>Time</th><th>Submitted</th></tr>";j.results.forEach((x,i)=>h+=`<tr><td>${i+1}</td><td>${esc(x.name)}</td><td>${x.attempt}</td><td>${x.score}/${x.total}</td><td>${x.percentage}%</td><td>${Math.floor(x.timeSeconds/60)}m ${x.timeSeconds%60}s</td><td>${esc(x.submittedAt)}</td></tr>`);$("resultsTable").innerHTML=h+"</table>";}catch(e){$("adminMsg").innerHTML='<div class="notice">Could not load results.</div>'}
+};
+</script>
+</body>
+</html>
